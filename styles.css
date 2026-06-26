@@ -325,3 +325,24 @@ textarea{min-height:96px;resize:vertical;font-family:'JetBrains Mono',monospace;
   .side-count{display:none}
   .entry-row, .entry-head{grid-template-columns:1.4fr 0.7fr 0.7fr 0.7fr auto}
 }
+.creator-link {
+  position: fixed;
+  bottom: 15px;
+  right: 15px;
+  background-color: #ff8c00; /* Orange background */
+  color: white; /* White text */
+  padding: 8px 12px;
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  text-decoration: none; /* Removes the underline */
+  font-weight: bold;
+  box-shadow: 0px 4px 6px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
+  z-index: 1000;
+}
+
+.creator-link:hover {
+  transform: scale(1.05); /* Makes it slightly bigger when hovered */
+  background-color: #e67e22;
+}
