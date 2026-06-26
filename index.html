@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Data Pack Creator — Free Minecraft Data Pack Maker</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"></script>
+<link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+<!-- NAV -->
+<header class="nav">
+  <a href="#" class="brand">
+    <span class="brand-mark"></span>
+    <span class="brand-name">Data Pack Creator <span class="brand-tag">DPC</span></span>
+  </a>
+  <nav class="nav-links">
+    <a href="#builder">Builder</a>
+    <a href="#formats">Formats</a>
+    <a href="#guide">Guide</a>
+  </nav>
+  <a href="#builder" class="btn btn-primary nav-cta">Start Building</a>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-left">
+    <h1>Free Minecraft <span class="accent">Data Pack</span> Maker</h1>
+    <p class="lede">
+      Build Minecraft Java data packs in your browser. Add custom
+      <em>recipes</em>, <em>functions</em>, <em>loot tables</em> and
+      <em>advancements</em>, then download a ready-to-drop <code>.zip</code>.
+      <strong>No install. No sign-up.</strong>
+    </p>
+    <div class="hero-ctas">
+      <a href="#builder" class="btn btn-primary btn-lg">Start Creating</a>
+      <a href="#formats" class="btn btn-ghost btn-lg">Pack Formats</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="window">
+      <div class="window-bar">
+        <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+        <span class="window-title">pack.mcmeta · my_first_pack</span>
+      </div>
+      <pre class="window-body"><code><span class="k">{</span>
+  <span class="s">"pack"</span><span class="k">:</span> <span class="k">{</span>
+    <span class="s">"description"</span><span class="k">:</span> <span class="v">"My first data pack"</span><span class="k">,</span>
+    <span class="s">"pack_format"</span><span class="k">:</span> <span class="n">48</span>
+  <span class="k">}</span>
+<span class="k">}</span></code></pre>
+      <div class="window-tags">
+        <span class="tag">Java</span>
+        <span class="tag">1.21</span>
+        <span class="tag tag-green">pack_format 48</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BUILDER -->
+<section id="builder" class="section">
+
+  <!-- Top "pack basics" strip — the simple essentials only -->
+  <div class="basics">
+    <label class="field field-grow">
+      <span>Pack name</span>
+      <input id="pack-name" type="text" value="my_first_pack" />
+    </label>
+    <label class="field">
+      <span>Minecraft version</span>
+      <select id="pack-version"></select>
+    </label>
+    <label class="field field-grow">
+      <span>Description</span>
+      <input id="pack-desc" type="text" value="My first data pack" />
+    </label>
+    <button class="btn btn-ghost btn-sm adv-toggle" id="adv-toggle" type="button">⚙ Advanced</button>
+  </div>
+
+  <!-- Hidden advanced panel -->
+  <div class="basics-adv hidden" id="basics-adv">
+    <label class="field">
+      <span>Namespace</span>
+      <input id="pack-namespace" type="text" value="example" />
+      <small>Your unique prefix. Lowercase a–z, 0–9, _</small>
+    </label>
+    <label class="field">
+      <span>pack_format</span>
+      <input id="pack-format" type="number" min="1" value="48" />
+      <small>Auto-set from version above.</small>
+    </label>
+    <label class="field">
+      <span>Author (optional)</span>
+      <input id="pack-author" type="text" value="" placeholder="your name" />
+    </label>
+  </div>
+
+  <!-- Side-by-side: nav + content + preview -->
+  <div class="builder">
+
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <button class="side-item side-active" data-tab="functions">
+        <span class="side-icon">▶</span>
+        <span class="side-label">Functions</span>
+        <span class="side-count" id="count-functions">0</span>
+      </button>
+      <button class="side-item" data-tab="recipes">
+        <span class="side-icon">▦</span>
+        <span class="side-label">Recipes</span>
+        <span class="side-count" id="count-recipes">0</span>
+      </button>
+      <button class="side-item" data-tab="advancements">
+        <span class="side-icon">★</span>
+        <span class="side-label">Advancements</span>
+        <span class="side-count" id="count-advancements">0</span>
+      </button>
+      <button class="side-item" data-tab="loot">
+        <span class="side-icon">◈</span>
+        <span class="side-label">Loot tables</span>
+        <span class="side-count" id="count-loot">0</span>
+      </button>
+
+      <div class="side-sep"></div>
+      <div class="side-group">More</div>
+
+      <button class="side-item" data-tab="tags">
+        <span class="side-icon">#</span>
+        <span class="side-label">Tags</span>
+        <span class="side-count" id="count-tags">0</span>
+      </button>
+      <button class="side-item" data-tab="predicates">
+        <span class="side-icon">?</span>
+        <span class="side-label">Predicates</span>
+        <span class="side-count" id="count-predicates">0</span>
+      </button>
+      <button class="side-item" data-tab="itemmods">
+        <span class="side-icon">✎</span>
+        <span class="side-label">Item mods</span>
+        <span class="side-count" id="count-itemmods">0</span>
+      </button>
+      <button class="side-item" data-tab="damage">
+        <span class="side-icon">⚔</span>
+        <span class="side-label">Damage types</span>
+        <span class="side-count" id="count-damage">0</span>
+      </button>
+
+      <div class="side-sep"></div>
+
+      <button class="side-item side-action" id="side-clear" type="button" title="Remove all items">
+        <span class="side-icon">✕</span><span class="side-label">Clear all</span>
+      </button>
+      <button class="side-item side-action" id="side-example" type="button" title="Load example items">
+        <span class="side-icon">✨</span><span class="side-label">Load example</span>
+      </button>
+    </aside>
+
+    <!-- Main editor -->
+    <div class="panel editor-panel">
+
+      <div class="tab-panel" data-panel="functions">
+        <div class="panel-head">
+          <div>
+            <h3>Functions</h3>
+            <p class="muted">Plain-text command lists (<code>.mcfunction</code>). One command per line.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" data-add="function">+ Add function</button>
+        </div>
+        <div id="list-functions" class="card-list"></div>
+      </div>
+
+      <div class="tab-panel hidden" data-panel="recipes">
+        <div class="panel-head">
+          <div>
+            <h3>Crafting recipes</h3>
+            <p class="muted">Shaped, shapeless, furnace, blast, smoking, campfire, stonecutter, or smithing.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" data-add="recipe">+ Add recipe</button>
+        </div>
+        <div id="list-recipes" class="card-list"></div>
+      </div>
+
+      <div class="tab-panel hidden" data-panel="advancements">
+        <div class="panel-head">
+          <div>
+            <h3>Advancements</h3>
+            <p class="muted">Pick a trigger — obtain item, place block, kill mob, consume, or enter location.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" data-add="advancement">+ Add advancement</button>
+        </div>
+        <div id="list-advancements" class="card-list"></div>
+      </div>
+
+      <div class="tab-panel hidden" data-panel="loot">
+        <div class="panel-head">
+          <div>
+            <h3>Loot tables</h3>
+            <p class="muted">A single pool with one or more weighted item entries.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" data-add="loot">+ Add loot table</button>
+        </div>
+        <div id="list-loot" class="card-list"></div>
+      </div>
+
+      <div class="tab-panel hidden" data-panel="tags">
+        <div class="panel-head">
+          <div>
+            <h3>Tags</h3>
+            <p class="muted">Group blocks, items, entities, fluids, game events, or functions under one ID — referenced as <code>#namespace:name</code>.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" data-add="tag">+ Add tag</button>
+        </div>
+        <div id="list-tags" class="card-list"></div>
+      </div>
+
+      <div class="tab-panel hidden" data-panel="predicates">
+        <div class="panel-head">
+          <div>
+            <h3>Predicates</h3>
+            <p class="muted">Reusable conditions referenced by loot tables, advancements, and the <code>/execute if predicate</code> command.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" data-add="predicate">+ Add predicate</button>
+        </div>
+        <div id="list-predicates" class="card-list"></div>
+      </div>
+
+      <div class="tab-panel hidden" data-panel="itemmods">
+        <div class="panel-head">
+          <div>
+            <h3>Item modifiers</h3>
+            <p class="muted">Reusable item transforms — rename, add lore, set count, enchant. Applied with <code>/item modify</code>.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" data-add="itemmod">+ Add modifier</button>
+        </div>
+        <div id="list-itemmods" class="card-list"></div>
+      </div>
+
+      <div class="tab-panel hidden" data-panel="damage">
+        <div class="panel-head">
+          <div>
+            <h3>Damage types <span class="muted">(1.19.4+)</span></h3>
+            <p class="muted">Custom damage sources. Use with <code>/damage</code> and damage-type tags.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" data-add="damage">+ Add damage type</button>
+        </div>
+        <div id="list-damage" class="card-list"></div>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="preview-panel">
+      <div class="window">
+        <div class="window-bar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="window-title" id="preview-title">my_first_pack.zip</span>
+        </div>
+        <div class="window-body tree-body">
+          <pre id="tree"></pre>
+        </div>
+      </div>
+
+      <button id="download" class="btn btn-primary btn-lg btn-full">⬇ Download .zip</button>
+      <p id="status" class="status muted">Click any file below to preview it.</p>
+
+      <div class="window file-window">
+        <div class="window-bar">
+          <span class="dot dot-r"></span><span class="dot dot-y"></span><span class="dot dot-g"></span>
+          <span class="window-title" id="file-title">pack.mcmeta</span>
+        </div>
+        <pre class="window-body file-body"><code id="file-preview"></code></pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FORMATS -->
+<section id="formats" class="section section-alt">
+  <div class="section-head">
+    <h2>Pack format reference</h2>
+    <p>Each Minecraft Java version expects a specific <code>pack_format</code>. Click any card to use it.</p>
+  </div>
+  <div class="format-grid" id="format-grid"></div>
+  <p class="muted small">
+    Since snapshot 25w31a (1.21.9+) <code>pack_format</code> was replaced by <code>min_format</code> / <code>max_format</code>.
+    Source: <span class="link">minecraft.wiki/w/Pack_format</span>
+  </p>
+</section>
+
+<!-- GUIDE -->
+<section id="guide" class="section">
+  <div class="section-head">
+    <h2>How a data pack works</h2>
+    <p>Anatomy of the file tree this tool generates for you.</p>
+  </div>
+  <div class="guide-grid">
+    <div class="guide-card"><h4>pack.mcmeta</h4><p>Root manifest. Declares the pack <code>description</code> and the <code>pack_format</code>.</p></div>
+    <div class="guide-card"><h4>data/&lt;namespace&gt;/</h4><p>Your unique folder so packs don't collide.</p></div>
+    <div class="guide-card"><h4>function/</h4><p><code>.mcfunction</code> files — one command per line. Run via <code>/function ns:name</code>.</p></div>
+    <div class="guide-card"><h4>recipe/</h4><p>JSON recipes auto-registered when the pack loads.</p></div>
+    <div class="guide-card"><h4>loot_table/</h4><p>JSON tables deciding what drops from blocks, mobs, chests.</p></div>
+    <div class="guide-card"><h4>advancement/</h4><p>JSON achievements with triggers, criteria, and rewards.</p></div>
+    <div class="guide-card"><h4>predicate/</h4><p>Reusable boolean conditions — random chance, weather, time, scores.</p></div>
+    <div class="guide-card"><h4>item_modifier/</h4><p>Reusable item transforms applied with <code>/item modify</code>.</p></div>
+    <div class="guide-card"><h4>damage_type/</h4><p>Custom damage sources (added in 1.19.4).</p></div>
+    <div class="guide-card"><h4>tags/function/</h4><p><code>load.json</code> runs once on load. <code>tick.json</code> runs every game tick.</p></div>
+    <div class="guide-card"><h4>tags/block/ · tags/item/</h4><p>Group blocks or items under one ID — referenced as <code>#ns:name</code>.</p></div>
+    <div class="guide-card"><h4>tags/entity_type/ · tags/fluid/</h4><p>Group entities or fluids for use in predicates and commands.</p></div>
+    <div class="guide-card"><h4>structure/</h4><p><code>.nbt</code> files for <code>/place template</code> and Jigsaw blocks.</p></div>
+    <div class="guide-card"><h4>worldgen/</h4><p>Biomes, features, noise settings, structures, world presets.</p></div>
+    <div class="guide-card"><h4>dimension/ · dimension_type/</h4><p>Define custom dimensions and their physics.</p></div>
+    <div class="guide-card"><h4>enchantment/ · trim_pattern/</h4><p>Data-driven enchantments (1.21+) and armor trims (1.20+).</p></div>
+  </div>
+</section>
+
+<footer class="footer">
+  <p>Not affiliated with Mojang or Microsoft. "Minecraft" is a trademark of Mojang Synergies AB. Data sourced from minecraft.wiki.</p>
+</footer>
+
+<!-- Shared datalist of common Minecraft item IDs (autocomplete) -->
+<datalist id="mc-items"></datalist>
+
+<script src="./app.js"></script>
+</body>
+</html>

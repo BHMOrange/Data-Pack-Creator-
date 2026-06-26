@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="96" height="96" shape-rendering="crispEdges">
+  <!-- Dirt Base -->
+  <rect width="16" height="16" fill="#866043"/>
+  
+  <!-- Dirt Texture Highlights -->
+  <path d="M1 2h1v1H1z M4 5h1v1H4z M8 12h1v1H8z M12 8h1v1H12z M2 14h1v1H2z M14 13h1v1H14z M7 8h1v1H7z M1 9h1v1H1z M14 7h1v1H14z" fill="#79553a"/>
+  
+  <!-- Dirt Texture Shadows -->
+  <path d="M3 4h1v1H3z M11 3h1v1H11z M6 10h1v1H6z M10 14h1v1H10z M1 12h1v1H1z M4 15h1v1H4z M13 15h1v1H13z M15 9h1v1H15z" fill="#63452d"/>
+
+  <!-- Grass Top Layer -->
+  <rect width="16" height="4" fill="#6ebf49"/>
+  
+  <!-- Grass Overhangs (Dripping down the sides) -->
+  <path d="M0 4h2v2H0z M2 4h1v1H2z M3 4h2v3H3z M5 4h1v1H5z M6 4h3v2H6z M9 4h2v3H9z M11 4h1v1H11z M12 4h2v2H12z M14 4h2v1H14z" fill="#59a63c"/>
+  
+  <!-- Top Grass Highlight -->
+  <rect width="16" height="1" fill="#88e060" opacity="0.5"/>
+
+  <!-- Code Brackets Minecraft UI Shadow (Offset down and right) -->
+  <path d="M7 8h1v1H7z M6 9h1v1H6z M5 10h1v1H5z M6 11h1v1H6z M7 12h1v1H7z M10 8h1v1H10z M11 9h1v1H11z M12 10h1v1H12z M11 11h1v1H11z M10 12h1v1H10z" fill="#222222" opacity="0.6"/>
+
+  <!-- Code Brackets < > (Center White Pixel Art) -->
+  <path d="M6 7h1v1H6z M5 8h1v1H5z M4 9h1v1H4z M5 10h1v1H5z M6 11h1v1H6z M9 7h1v1H9z M10 8h1v1H10z M11 9h1v1H11z M10 10h1v1H10z M9 11h1v1H9z" fill="#ffffff"/>
+</svg>
