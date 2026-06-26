@@ -225,10 +225,18 @@ textarea{min-height:96px;resize:vertical;font-family:'JetBrains Mono',monospace;
 .checkrow input[type=checkbox]{accent-color:var(--green);width:14px;height:14px}
 
 .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-width:240px}
-.grid-3 input{
-  background:var(--bg-2);border:1px solid var(--border-2);border-radius:6px;
-  text-align:center;padding:10px 0;color:var(--code);font-family:'JetBrains Mono',monospace;
-  font-size:15px; outline:none;
+.grid-3 input {
+  width: 100%;
+  min-width: 0;
+  background: var(--bg-2);
+  border: 1px solid var(--border-2);
+  border-radius: 6px;
+  text-align: center;
+  padding: 10px 0;
+  color: var(--code);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 15px;
+  outline: none;
 }
 .grid-3 input:focus{border-color:var(--green)}
 
